@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="checkbox" value="remember-me"> Zapomni si me
           </label>
           <br>
-          <a href="registrer.php">Registracija</a>
+          <a href="register.php">Registracija</a>
         </div>
         <button name="submit" class="btn btn-lg btn-primary btn-block" type="submit">Prijava</button>
       </form>
