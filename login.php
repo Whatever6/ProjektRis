@@ -3,6 +3,8 @@
 // prijavna stran
 // preverjaje prijave
 // izpis prijavnega obrazca
+ob_start();
+session_start();
 
 require ('includes/config.inc.php'); 
 $page_title = 'Login';
@@ -30,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if ($e && $p) { // če je vse OK
 
 		// SQL za povpraševanje po uporabniku v PB
-		$q = "SELECT user_id, first_name, user_level FROM users WHERE (email='$e' AND pass=SHA1('$p')) AND active IS NULL";		
+		$q = "SELECT user_id, first_name, last_name, email FROM users WHERE (email='$e' AND pass=SHA1('$p')) AND active IS NULL";		
 		$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 		
 		if (@mysqli_num_rows($r) == 1) { // če tak uporabnik obstaja
@@ -133,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     <div class="container">
-      <form class="form-signin"  action="index.php" method="post">
+      <form class="form-signin"  action="login.php" method="post">
         <h2 class="form-signin-heading">Za uporabo strani se morate prijaviti</h2>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input name="email" size="20" maxlength="60" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>

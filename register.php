@@ -6,7 +6,6 @@
 require ('includes/config.inc.php');
 $page_title = 'Register';
 require ('includes/mail.php');
-include ('bootstrap')
 
 
 // procesiranje podatkov registracijskega obrazca
@@ -92,7 +91,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				//$mail($trimmed['email'], 'Registration Confirmation', $body, 'From: vrtnarija.praktikum@gmail.com');
 				
 				echo '<h3>Hvala za registreacijo! Na vaš email naslov smo poslali verifikacijsko kodo. Prosimo, da kliknete na tisto povezavo, da potrdite registracijo.</h3>';
-				include ('includes/footer.html'); // vključevanje noge
 				exit(); // izvajanje se konča
 				
 			} else { // če je šlo kaj narobe

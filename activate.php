@@ -34,5 +34,4 @@ if (isset($_GET['x'], $_GET['y'])
 
 }
 
-include ('includes/footer.html');
 ?>

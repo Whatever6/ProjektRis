@@ -109,8 +109,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 						} 
 						?> <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="profil.php">Moj profil</a></li>
-                    <li class="active"><a href="change_password.php">Sprememba gesla</a></li>
+                    <li class="active"><a href="profil.php">Moj profil</a></li>
+                    <li><a href="change_password.php">Sprememba gesla</a></li>
                     <li><a href="logout.php">Odjava</a></li>
           		</ul>
                 </li>
@@ -123,44 +123,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <br><br>
 	<div class="container">
       <div class="page-header">
-        <h1>Spremembe osebnih podatkov</h1>
+        <h1>Moji podatki</h1>
       </div>
-       <div class="col-md-6">
+	  
+	  <div class="col-md-6">
        	<div class="row">
-       		<form action="change_password.php" method="post">
-	       		<h2><span class="label label-primary">Sprememba Gesla </span></h2>
-	       		<div class="row">
-		       		<div class="col-xs-8">  
-			       		<h4>Vnesite staro geslo:</h4>
-			       		<input type="password" id="inputPassword" class="form-control" placeholder="Geslo" required>
-		       		</div>
-	       		</div>
-	       		<div class="row">
-		       		<div class="col-xs-8">	       		
-			       		<h4>Vnesite novo geslo:</h4>
-			       		<input type="password" name="password1" size="20" maxlength="20" id="inputPassword" class="form-control" placeholder="Novo geslo" required>
-		       		</div>
-	       		</div>
-	       		<div class="row">
-		       		<div class="col-xs-8">	       		
-			       		<h4>Ponovno novo geslo:</h4>
-			       		<input type="password" name="password2" size="20" maxlength="20" id="inputPassword" class="form-control" placeholder="Potrdi novo geslo" required>
-		       		</div>
-	       		</div>
-	       		<hr>
-	       		<div class="row">
-		       		<div class="col-xs-8">
-	       				<button class="btn btn-lg btn-primary btn-block" type="submit"name="submit">Potrdi spremembo gesla</button>  
-	       			</div>
-	       		</div>  
-       		</form>
-       	</div>
-      </div>
+			<?php 
+				if (isset($_SESSION['first_name'])) {
+					echo "<h4><b>Ime:</b> {$_SESSION['first_name']} </h4>";
+					echo "<h4><b>Priimek:</b> {$_SESSION['last_name']} </h4>";
+					echo "<h4><b>Email:</b> {$_SESSION['email']} </h4>";					
+				} 
+			?> 
+		</div>
+	  </div>
     </div>
-     
-         
-        </div>
-      </div>
       <br>
 
 	<script>

@@ -20,7 +20,7 @@ define('EMAIL', 'vrtnarija.praktikum@gmail.com');
 
 
 // v realnosti - naslov URL strani (zaradi preusmeritev)
-define ('BASE_URL', 'http://localhost/projektris/index.php');
+define ('BASE_URL', 'http://localhost/projektris/');
 
 // lokacija konfiguracijske datoteke za PB
 define ('MYSQL', '/includes/mysqli_connect.php');

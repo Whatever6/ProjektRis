@@ -1,4 +1,10 @@
+<?php
+ob_start();
 
+session_start();
+require ('includes/config.inc.php');
+
+?>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -36,14 +42,19 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="vindex.php">Vsi artikli</a></li>
+                <li class="active"><a href="index.php">Vsi artikli</a></li>
                 <li><a href="moji_artikli.html">Moji artikli</a></li>
                 <li>
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
  					<li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">IME UPORABNIKA<span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					<?php if (isset($_SESSION['first_name'])) {
+							echo "{$_SESSION['first_name']} {$_SESSION['last_name']}";
+						} 
+						?> <span class="caret"></span></a>
                   <ul class="dropdown-menu">
+                    <li><a href="profil.php">Moj profil</a></li>
                     <li><a href="change_password.php">Sprememba gesla</a></li>
                     <li><a href="logout.php">Odjava</a></li>
           		</ul>
@@ -175,20 +186,3 @@
     <script src="bootstrap/assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
-
-<?php 
-
-// glavna stran spletne strani
-
-require ('includes/config.inc.php'); 
-
-// nastavitev naslova in vključevanje glave oz. header.html
-$page_title = 'Welcome to this Site!';
-
-// izpis pozdravnega sporočila z imenom (če je uporabnik prijavljen)
-echo '<h1>Welcome';
-if (isset($_SESSION['first_name'])) {
-	echo ", {$_SESSION['first_name']}";
-}
-echo '!</h1>';
-?>
