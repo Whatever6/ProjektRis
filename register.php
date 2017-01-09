@@ -21,41 +21,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$fn = $ln = $e = $p = FALSE;
 	
 	// preverjanje imena in po potrebi izpis napake
-	if (preg_match ('/^[A-Z \'.-]{2,20}$/i', $trimmed['first_name'])) {
-		$fn = mysqli_real_escape_string ($dbc, $trimmed['first_name']);
+	if (preg_match ('/^[A-Z \'.-]{2,20}$/i', $trimmed['ime'])) {
+		$fn = mysqli_real_escape_string ($dbc, $trimmed['ime']);
 	} else {
-		echo '<p class="error">Please enter your first name!</p>';
+		echo '<p class="error">Prosimo, vpišite svoje ime!</p>';
 	}
 
 	// preverjanje priimka in po potrebi izpis napake
-	if (preg_match ('/^[A-Z \'.-]{2,40}$/i', $trimmed['last_name'])) {
-		$ln = mysqli_real_escape_string ($dbc, $trimmed['last_name']);
+	if (preg_match ('/^[A-Z \'.-]{2,40}$/i', $trimmed['priimek'])) {
+		$ln = mysqli_real_escape_string ($dbc, $trimmed['priimek']);
 	} else {
-		echo '<p class="error">Please enter your last name!</p>';
+		echo '<p class="error">Prosimo, vpišite svoj priimek!</p>';
 	}
 	
 	// preverjanje e-maila in po potrebi izpis napake
 	if (filter_var($trimmed['email'], FILTER_VALIDATE_EMAIL)) {
 		$e = mysqli_real_escape_string ($dbc, $trimmed['email']);
 	} else {
-		echo '<p class="error">Please enter a valid email address!</p>';
+		echo '<p class="error">Prosimo, vnesite veljaven email naslov!</p>';
 	}
 
 	// prevejanje gesla in primerjava z drugin vnosom gesla ter po potrebi izpis napake
-	if (preg_match ('/^\w{4,20}$/', $trimmed['password1']) ) {
-		if ($trimmed['password1'] == $trimmed['password2']) {
-			$p = mysqli_real_escape_string ($dbc, $trimmed['password1']);
+	if (preg_match ('/^\w{4,20}$/', $trimmed['geslo1']) ) {
+		if ($trimmed['geslo1'] == $trimmed['geslo2']) {
+			$p = mysqli_real_escape_string ($dbc, $trimmed['geslo1']);
 		} else {
-			echo '<p class="error">Your password did not match the confirmed password!</p>';
+			echo '<p class="error">Vpisani gesli se ne ujemata!</p>';
 		}
 	} else {
-		echo '<p class="error">Please enter a valid password!</p>';
+		echo '<p class="error">Prosimo, vpišite veljavno geslo!</p>';
 	}
 	
 	if ($fn && $ln && $e && $p) { // če je vse OK
 
 		// preverjanje ali je email še na voljo (ne sme biti že zaseden)
-		$q = "SELECT user_id FROM users WHERE email='$e'";
+		$q = "SELECT id_uporabnik FROM uporabnik WHERE email='$e'";
 		$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 		
 		if (mysqli_num_rows($r) == 0) { // e-mail je na voljo
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$a = md5(uniqid(rand(), true));
 
 			// vstavljanje novega uporabnika v PB
-			$q = "INSERT INTO users (email, pass, first_name, last_name, active, registration_date) 
+			$q = "INSERT INTO uporabnik (email, pass, ime, priimek, active, registration_date) 
 			VALUES ('$e', SHA1('$p'), '$fn', '$ln', '$a', NOW() )";
 			$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li><a href="index.php">Domov</a></li>
+                <li><a href="vsi_artikli.php">Domov</a></li>
                   </ul>
             </div>
           </div>
@@ -163,8 +163,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
  <div class="col-md-15">
      <div class="container">
       <form action="register.php" method="post" class="form-signin">
-			<input type="text" name="first_name" size="20" maxlength="20" value="<?php if (isset($trimmed['first_name'])) echo $trimmed['first_name']; ?>"  class="form-control" placeholder="Ime" aria-describedby="basic-addon1" required>
-		    <input type="text" name="last_name" size="20" maxlength="40" value="<?php if (isset($trimmed['last_name'])) echo $trimmed['last_name']; ?>" class="form-control" placeholder="Priimek" aria-describedby="basic-addon1" required>
+			<input type="text" name="ime" size="20" maxlength="20" value="<?php if (isset($trimmed['ime'])) echo $trimmed['ime']; ?>"  class="form-control" placeholder="Ime" aria-describedby="basic-addon1" required>
+		    <input type="text" name="priimek" size="20" maxlength="40" value="<?php if (isset($trimmed['priimek'])) echo $trimmed['priimek']; ?>" class="form-control" placeholder="Priimek" aria-describedby="basic-addon1" required>
 		    <label for="inputEmail" class="sr-only"type="text" name="email" size="30" maxlength="60" value="<?php if (isset($trimmed['email'])) echo $trimmed['email']; ?>" >Email address</label>
 		    <input name="email" type="email" id="inputEmail" class="form-control" placeholder="E-naslov" required autofocus>
 		    <br>
@@ -172,9 +172,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		    <input name="tel_st" type="text" class="form-control" placeholder="Telefonska stevilka" aria-describedby="basic-addon1" required>
 		    <hr>
 			<label for="inputPassword" class="sr-only">Password</label>
-			<input type="password" name="password1" size="20" maxlength="20" value="<?php if (isset($trimmed['password1'])) echo $trimmed['password1']; ?>" id="inputPassword" class="form-control" placeholder="Geslo" required>
+			<input type="password" name="geslo1" size="20" maxlength="20" value="<?php if (isset($trimmed['geslo1'])) echo $trimmed['geslo1']; ?>" id="inputPassword" class="form-control" placeholder="Geslo" required>
 			<label for="inputPassword" class="sr-only">Password</label>
-			<input type="password" name="password2" size="20" maxlength="20" value="<?php if (isset($trimmed['password2'])) echo $trimmed['password2']; ?>" id="inputPassword" class="form-control" placeholder="Potrditev Gesla" required>
+			<input type="password" name="geslo2" size="20" maxlength="20" value="<?php if (isset($trimmed['geslo2'])) echo $trimmed['geslo2']; ?>" id="inputPassword" class="form-control" placeholder="Potrditev Gesla" required>
 			<hr>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Registracija	</button>
       </form>

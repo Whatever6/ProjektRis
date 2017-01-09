@@ -10,9 +10,9 @@ require ('includes/config.inc.php');
 $page_title = 'Change Your Password';
 
 // če uporabnik  ni prijavljen
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['id_uporabnik'])) {
 	
-	$url = BASE_URL . 'index.php'; 
+	$url = BASE_URL . 'vsi_artikli.php'; 
 	ob_end_clean(); 
 	header("Location: $url");
 	exit();
@@ -25,35 +25,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			
 	// preverjanje gesla in ali je dvakrat vnešeno isto novo geslo
 	$p = FALSE;
-	if (preg_match ('/^(\w){4,20}$/', $_POST['password1']) ) {
-		if ($_POST['password1'] == $_POST['password2']) {
-			$p = mysqli_real_escape_string ($dbc, $_POST['password1']);
+	if (preg_match ('/^(\w){4,20}$/', $_POST['geslo1']) ) {
+		if ($_POST['geslo1'] == $_POST['geslo2']) {
+			$p = mysqli_real_escape_string ($dbc, $_POST['geslo1']);
 		} else {
-			echo '<p class="error">Your password did not match the confirmed password!</p>';
+			echo '<p class="error">Gesli se ne ujemata!</p>';
 		}
 	} else {
-		echo '<p class="error">Please enter a valid password!</p>';
+		echo '<p class="error">Prosimo vnesite veljavno geslo!</p>';
 	}
 	
 	if ($p) { // če je vse OK
 
-		$q = "UPDATE users SET pass=SHA1('$p') WHERE user_id={$_SESSION['user_id']} LIMIT 1";	
+		$q = "UPDATE uporabnik SET pass=SHA1('$p') WHERE id_uporabnik={$_SESSION['id_uporabnik']} LIMIT 1";	
 		$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 		if (mysqli_affected_rows($dbc) == 1) { // če je vse OK
 
-			echo '<h3>Your password has been changed.</h3>';
+			echo '<h3>Uspešno ste spremenili geslo.</h3>';
 			
 			mysqli_close($dbc);  
 			exit();
 			
 		} else { // če se je kje zalomilo
 		
-			echo '<p class="error">Your password was not changed. Make sure your new password is different than the current password. Contact the system administrator if you think an error occurred.</p>'; 
+			echo '<p class="error">Vaše geslo se ni spremenilo. Preverite, da je novo geslo drugačno od prejšnega. V primeru, da mislite da je prišlo do napake, kontaktirajte administratorja.</p>'; 
 
 		}
 
 	} else { // če validacija gesla ni uspela
-		echo '<p class="error">Please try again.</p>';		
+		echo '<p class="error">Prosimo, poskusite ponovno.</p>';		
 	}
 	
 	mysqli_close($dbc); 
@@ -97,15 +97,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li><a href="index.php">Vsi artikli</a></li>
-                <li><a href="moji_artikli.html">Moji artikli</a></li>
+                <li><a href="vsi_artikli.php">Vsi artikli</a></li>
+                <li><a href="moji_artikli.php">Moji artikli</a></li>
                 <li>
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
  					<li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-				  <?php if (isset($_SESSION['first_name'])) {
-							echo "{$_SESSION['first_name']} {$_SESSION['last_name']}";
+				  <?php if (isset($_SESSION['ime'])) {
+							echo "{$_SESSION['ime']} {$_SESSION['priimek']}";
 						} 
 						?> <span class="caret"></span></a>
                   <ul class="dropdown-menu">
@@ -132,25 +132,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	       		<div class="row">
 		       		<div class="col-xs-8">  
 			       		<h4>Vnesite staro geslo:</h4>
-			       		<input type="password" id="inputPassword" class="form-control" placeholder="Geslo" required>
+			       		<input type="password" id="inputPassword" class="form-control" placeholder="Staro geslo" required>
 		       		</div>
 	       		</div>
 	       		<div class="row">
 		       		<div class="col-xs-8">	       		
 			       		<h4>Vnesite novo geslo:</h4>
-			       		<input type="password" name="password1" size="20" maxlength="20" id="inputPassword" class="form-control" placeholder="Novo geslo" required>
+			       		<input type="password" name="geslo1" size="20" maxlength="20" id="inputPassword" class="form-control" placeholder="Novo geslo" required>
 		       		</div>
 	       		</div>
 	       		<div class="row">
 		       		<div class="col-xs-8">	       		
 			       		<h4>Ponovno novo geslo:</h4>
-			       		<input type="password" name="password2" size="20" maxlength="20" id="inputPassword" class="form-control" placeholder="Potrdi novo geslo" required>
+			       		<input type="password" name="geslo2" size="20" maxlength="20" id="inputPassword" class="form-control" placeholder="Potrdite novo geslo" required>
 		       		</div>
 	       		</div>
 	       		<hr>
 	       		<div class="row">
 		       		<div class="col-xs-8">
-	       				<button class="btn btn-lg btn-primary btn-block" type="submit"name="submit">Potrdi spremembo gesla</button>  
+	       				<button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Potrdi spremembo gesla</button>  
 	       			</div>
 	       		</div>  
        		</form>

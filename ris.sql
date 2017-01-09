@@ -79,14 +79,6 @@ INSERT INTO `uporabnik` (`id_uporabnik`, `ime`, `priimek`, `email`, `pass`, `use
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `artikel`
---
-ALTER TABLE `artikel`
-  ADD PRIMARY KEY (`ID_Artikel`),
-  ADD KEY `Uporabnik_idUporabnik` (`Uporabnik_idUporabnik`);
-
 --
 -- Indexes for table `uporabnik`
 --
@@ -99,11 +91,25 @@ ALTER TABLE `uporabnik`
 -- AUTO_INCREMENT for dumped tables
 --
 
+ALTER TABLE `uporabnik`
+  MODIFY `id_uporabnik` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 --
+
+--
+-- Indexes for table `artikel`
+--
+ALTER TABLE `artikel`
+  ADD PRIMARY KEY (`ID_Artikel`),
+  ADD KEY `Uporabnik_idUporabnik` (`Uporabnik_idUporabnik`);
+
+
 -- AUTO_INCREMENT for table `artikel`
 --
 ALTER TABLE `artikel`
-  MODIFY `ID_Artikel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `ID_Artikel` int(11)NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- Constraints for dumped tables
 --
@@ -117,3 +123,4 @@ ALTER TABLE `artikel`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

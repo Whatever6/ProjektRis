@@ -1,24 +1,21 @@
 <?php
 
-// skripta, ki omogoča, da si uporabniku spremenijo geslo
-// PHP skripta za spreminjanje gesla
-// prikaz obrazca za spreminjanje gesla
 ob_start();
 session_start();
 
-require ('includes/config.inc.php'); 
-$page_title = 'Profil';
+require ('includes/config.inc.php');
 
-// če uporabnik  ni prijavljen
-if (!isset($_SESSION['id_uporabnik'])) {
-	
-	$url = BASE_URL . 'vsi_artikli.php'; 
-	ob_end_clean(); 
-	header("Location: $url");
-	exit();
-	
-}
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "baza_posoje";
 
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,6 +40,7 @@ if (!isset($_SESSION['id_uporabnik'])) {
 <!-- NAVBAR
 ================================================== -->
   <body>
+  
     <div class="navbar-wrapper">
       <div class="container">
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -57,19 +55,19 @@ if (!isset($_SESSION['id_uporabnik'])) {
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li><a href="vsi_artikli.php">Vsi artikli</a></li>
+                <li class="active"><a href="vsi_artikli.php">Vsi artikli</a></li>
                 <li><a href="moji_artikli.php">Moji artikli</a></li>
                 <li>
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
  					<li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-				  <?php if (isset($_SESSION['ime'])) {
+					<?php if (isset($_SESSION['ime'])) {
 							echo "{$_SESSION['ime']} {$_SESSION['priimek']}";
 						} 
 						?> <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li class="active"><a href="profil.php">Moj profil</a></li>
+				  <ul class="dropdown-menu">
+                    <li><a href="profil.php">Moj profil</a></li>
                     <li><a href="change_password.php">Sprememba gesla</a></li>
                     <li><a href="logout.php">Odjava</a></li>
           		</ul>
@@ -80,25 +78,67 @@ if (!isset($_SESSION['id_uporabnik'])) {
         </nav>
       </div>
     </div>
+
 <br><br>
-	<div class="container">
+      <div class="container">      
+      <div class="page-header"></div>
       <div class="page-header">
-        <h1>Moji podatki</h1>
+        <h1>Vsi artikli:</h1>
       </div>
-	  
-	  <div class="col-md-6">
-       	<div class="row">
-			<?php 
-				if (isset($_SESSION['ime'])) {
-					echo "<h4><b>Ime:</b> {$_SESSION['ime']} </h4>";
-					echo "<h4><b>Priimek:</b> {$_SESSION['priimek']} </h4>";
-					echo "<h4><b>Email:</b> {$_SESSION['email']} </h4>";					
-				} 
-			?> 
-		</div>
-	  </div>
-    </div>
-      <br>
+
+ <div class="col-md-15">
+	 <form name="input" action="brisanje_artikla.php" method="post">
+          <table class="sortable table table-striped" id="mojaEvidencaa">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Artikel</th>
+				<th>Zvrst</th>
+				<th>Kraj</th>
+                <th>Datum vrnitve</th>
+              </tr>
+            </thead>
+            <tbody>
+			<?php
+			$sql = "SELECT ID_Artikel, ime_artikla, namen_uporabe, status, kraj, datum_vrnitve FROM artikel";
+			$result = $conn->query($sql);
+			$st=1;
+			if ($result->num_rows > 0) {
+				// output data of each row
+				
+				while($row = $result->fetch_assoc()) {
+					if($row["status"]==0){
+						$statuss="ni_na_voljo";
+					}else{
+						$statuss="";
+					}
+					if($statuss=="ni_na_voljo"){
+						
+					}else{
+						echo 
+							"<tr id='".$statuss."'>".
+							"<td>".$st."</td>".
+							"<td>"."<a href='artikel.php?data1=".$row["ID_Artikel"]."'>".$row["ime_artikla"]."</a></td>
+							<td>" . $row["namen_uporabe"] . "</td>
+							<td>" . $row["kraj"] . "</td>
+							<td>" . $row["datum_vrnitve"] . "</td>
+							</tr>";
+							$st=$st+1;
+					}
+					
+				}
+			} else {
+				echo "0 results";
+			}
+			?>
+            </tbody>
+          </table>
+        </div>
+        <div class="page-header"></div>
+
+		</form>
+		<div class="page-header"></div>
+      </div>
 
 	<script>
 	</script>
@@ -108,3 +148,6 @@ if (!isset($_SESSION['id_uporabnik'])) {
     <script src="bootstrap/assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
+<?php
+$conn->close();
+?>

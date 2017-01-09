@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$e = mysqli_real_escape_string ($dbc, $_POST['email']);
 	} else {
 		$e = FALSE;
-		echo '<p class="error">You forgot to enter your email address!</p>';
+		echo '<p class="error">Pozabili ste vnesti email naslov!</p>';
 	}
 	
 	// preverjanje gesla
@@ -26,13 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$p = mysqli_real_escape_string ($dbc, $_POST['pass']);
 	} else {
 		$p = FALSE;
-		echo '<p class="error">You forgot to enter your password!</p>';
+		echo '<p class="error">Pozabili ste vnesti geslo!</p>';
 	}
 	
 	if ($e && $p) { // če je vse OK
 
 		// SQL za povpraševanje po uporabniku v PB
-		$q = "SELECT user_id, first_name, last_name, email FROM users WHERE (email='$e' AND pass=SHA1('$p')) AND active IS NULL";		
+		$q = "SELECT id_uporabnik, ime, priimek, email FROM uporabnik WHERE (email='$e' AND pass=SHA1('$p')) AND active IS NULL";		
 		$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 		
 		if (@mysqli_num_rows($r) == 1) { // če tak uporabnik obstaja
@@ -43,18 +43,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			mysqli_close($dbc);
 							
 			// preusmeritev na začetno stran
-			$url = BASE_URL . 'index.php'; 
+			$url = BASE_URL . 'vsi_artikli.php'; 
 			ob_end_clean(); // brisanje napak
 			header("Location: $url");
 			exit();
 				
 		} else { // če uporabnik ni najden
-			echo '<p class="error">Either the email address and password entered 
-			do not match those on file or you have not yet activated your account.</p>';
+			echo '<p class="error">OBVESTILO: Ali ste nepravilno vnesli geslo in email naslov
+			ali pa še niste aktivirali računa. Poskusite ponovno.</p>';
 		}
 		
 	} else { // če je prišlo do napake
-		echo '<p class="error">Please try again.</p>';
+		echo '<p class="error">Prosimo, poskusite ponovno.</p>';
 	}
 	
 	mysqli_close($dbc);

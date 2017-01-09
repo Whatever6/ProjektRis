@@ -6,8 +6,8 @@ session_start();
 require ('includes/config.inc.php'); 
 $page_title = 'Logout';
 
-// če v seji ni shranjenega imena, lahko uporabnika samo preuksmerimo 
-if (!isset($_SESSION['first_name'])) {
+// če v seji ni shranjenega imena, lahko uporabnika samo preusmerimo 
+if (!isset($_SESSION['ime'])) {
 
 	$url = BASE_URL . 'login.php';
 	ob_end_clean(); 
@@ -57,8 +57,8 @@ if (!isset($_SESSION['first_name'])) {
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li><a href="index.php">Vsi artikli</a></li>
-                <li><a href="moji_artikli.html">Moji artikli</a></li>
+                <li><a href="vsi_artikli.php">Vsi artikli</a></li>
+                <li><a href="moji_artikli.php">Moji artikli</a></li>
                 
               </ul>
               <ul class="nav navbar-nav navbar-right">
@@ -67,8 +67,8 @@ if (!isset($_SESSION['first_name'])) {
               <ul class="nav navbar-nav navbar-right">
  				<li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-					<?php if (isset($_SESSION['first_name'])) {
-							echo "{$_SESSION['first_name']} {$_SESSION['last_name']}";
+					<?php if (isset($_SESSION['ime'])) {
+							echo "{$_SESSION['ime']} {$_SESSION['priimek']}";
 						} 
 						?> <span class="caret"></span></a>
                   <ul class="dropdown-menu">
