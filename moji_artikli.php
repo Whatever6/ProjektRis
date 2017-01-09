@@ -61,10 +61,15 @@ if ($conn->connect_error) {
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
  					<li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">IME UPORABNIKA<span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="moznosti.php">Moznosti</a></li>
-                    <li><a href="#">Odjava</a></li>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					<?php if (isset($_SESSION['ime'])) {
+							echo "{$_SESSION['ime']} {$_SESSION['priimek']}";
+						} 
+						?> <span class="caret"></span></a>
+				  <ul class="dropdown-menu">
+                    <li><a href="profil.php">Moj profil</a></li>
+                    <li><a href="change_password.php">Sprememba gesla</a></li>
+                    <li><a href="logout.php">Odjava</a></li>
           		</ul>
                 </li>
               </ul>
